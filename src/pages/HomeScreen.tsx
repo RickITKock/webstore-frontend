@@ -92,6 +92,7 @@ function HomeScreen() {
             <Col sm={12} md={6} lg={4} xl={3}>
               <Product
                 key={product._id}
+                _id={product._id}
                 image={product.image}
                 name={product.name}
                 price={product.price}
