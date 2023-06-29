@@ -1,8 +1,31 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import Product from "../components/Product";
-import { products } from "./products";
 
-function HomePage() {
+interface ProductType {
+  _id: string;
+  price: number;
+  rating: number;
+  name: string;
+  numReviews: string;
+  image: string;
+}
+
+const HomePage = () => {
+  const [products, setProducts] = useState<ProductType[]>([]);
+
+  useEffect(() => {
+    axios
+      .get("/api/products")
+      .then((response) => {
+        if (response && response.data) {
+          setProducts(response.data);
+        }
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
   return (
     <>
       <h1>Latest Products</h1>
@@ -25,5 +48,6 @@ function HomePage() {
       </Row>
     </>
   );
-}
+};
+
 export default HomePage;
