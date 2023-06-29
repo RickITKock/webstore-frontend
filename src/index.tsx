@@ -8,13 +8,15 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import App from "./App";
-import HomeScreen from "./pages/HomeScreen";
+import HomePage from "./pages/HomePage";
+import ProductPage from "./pages/ProductPage";
 import reportWebVitals from "./reportWebVitals";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
-      <Route path="/" element={<HomeScreen />} />
+      <Route index={true} path="/" element={<HomePage />} />
+      <Route path="/products/:id" element={<ProductPage />} />
     </Route>
   )
 );
