@@ -95,6 +95,8 @@ function HomeScreen() {
                 _id={product._id}
                 image={product.image}
                 name={product.name}
+                rating={product.rating}
+                numReviews={product.numReviews.toString()}
                 price={product.price}
               />
             </Col>
