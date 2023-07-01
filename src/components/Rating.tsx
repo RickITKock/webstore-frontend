@@ -6,18 +6,25 @@ interface Props {
 }
 
 const Rating: React.FC<Props> = ({ value, text }) => {
-  return (
-    <div>
-      <span>
-        {value >= 1 ? (
+  const stars = Array.from({ length: 5 }, (_, index) => {
+    const starValue = index + 0.5;
+    return (
+      <span key={starValue}>
+        {value >= starValue ? (
           <FaStar />
-        ) : value >= 0.5 ? (
+        ) : value >= starValue - 0.5 ? (
           <FaStarHalfAlt />
         ) : (
           <FaRegStar />
         )}
       </span>
-      {text}
+    );
+  });
+
+  return (
+    <div className="rating">
+      {stars}
+      <span className="rating-text">{text && " " + text}</span>
     </div>
   );
 };
