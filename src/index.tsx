@@ -8,6 +8,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import App from "./App";
+import "./index.css";
 import HomePage from "./pages/HomePage";
 import ProductPage from "./pages/ProductPage";
 import reportWebVitals from "./reportWebVitals";
