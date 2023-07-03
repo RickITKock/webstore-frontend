@@ -11,6 +11,7 @@ import {
 } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import Rating from "../components/Rating";
+import { useGetProductDetailsQuery } from "../slices/productsApiSlice";
 
 interface ProductType {
   _id: string;
@@ -25,52 +26,62 @@ interface ProductType {
 
 const ProductPage: React.FC = () => {
   const { id: productId } = useParams();
-  const [product, setProduct] = useState<ProductType>();
+  const {
+    data: productDetails,
+    isLoading,
+    error,
+  } = useGetProductDetailsQuery(productId);
 
-  useEffect(() => {
-    axios
-      .get(`/api/products/${productId}`)
-      .then((response) => {
-        if (response && response.data) {
-          setProduct(response.data);
-        }
-      })
-      .catch((error) => console.log(error));
-  }, [productId]);
+  // useEffect(() => {
+  //   axios
+  //     .get(`/api/products/${productId}`)
+  //     .then((response) => {
+  //       if (response && response.data) {
+  //         setProduct(response.data);
+  //       }
+  //     })
+  //     .catch((error) => console.log(error));
+  // }, [productId]);
 
   return (
     <>
       <Link className="btn btn-warning my-3" to="/">
         Go Back
       </Link>
-      {product && (
+      {isLoading && <div>Loading</div>}
+      {error && error}
+      {productDetails && (
         <Row>
           <Col md={5}>
-            <Image src={product.image} alt={product.name} />
+            <Image src={productDetails.image} alt={productDetails.name} />
           </Col>
           <Col md={4}>
-            <ListGroup variant="flush">
-              <ListGroupItem>
-                <h3>{product.name}</h3>
-              </ListGroupItem>
-              <ListGroupItem>
-                <Rating
-                  value={product.rating}
-                  text={`${product.numReviews} reviews`}
-                />
-              </ListGroupItem>
-              <ListGroupItem>Price: {product.price}</ListGroupItem>
-              <ListGroupItem>Desciption: {product.description}</ListGroupItem>
-            </ListGroup>
+            <Card className="py-5 border-0 rounded-5">
+              <ListGroup variant="flush">
+                <ListGroupItem>
+                  <h3>{productDetails.name}</h3>
+                </ListGroupItem>
+                <ListGroupItem>
+                  <Rating
+                    value={productDetails.rating}
+                    text={`${productDetails.numReviews} reviews`}
+                  />
+                </ListGroupItem>
+                <ListGroupItem>Price: {productDetails.price}</ListGroupItem>
+                <ListGroupItem>
+                  Desciption: {productDetails.description}
+                </ListGroupItem>
+              </ListGroup>
+            </Card>
           </Col>
           <Col md={3}>
-            <Card>
+            <Card className="py-5 border-0 rounded-5">
               <ListGroup variant="flush">
                 <ListGroupItem>
                   <Row>
                     <Col>Price:</Col>
                     <Col>
-                      <strong>${product.price}</strong>
+                      <strong>${productDetails.price}</strong>
                     </Col>
                   </Row>
                 </ListGroupItem>
@@ -79,7 +90,9 @@ const ProductPage: React.FC = () => {
                     <Col>Status:</Col>
                     <Col>
                       <strong>
-                        {product.countInStock > 0 ? "In Stock" : "Out Of stock"}
+                        {productDetails.countInStock > 0
+                          ? "In Stock"
+                          : "Out Of stock"}
                       </strong>
                     </Col>
                   </Row>
@@ -88,7 +101,7 @@ const ProductPage: React.FC = () => {
                   <Button
                     className="btn-block"
                     type="button"
-                    disabled={product.countInStock === 0}
+                    disabled={productDetails.countInStock === 0}
                   >
                     Add to Cart
                   </Button>

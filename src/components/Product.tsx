@@ -13,7 +13,7 @@ interface Props {
 
 const Product: React.FC<Props> = (product) => {
   return (
-    <Card className="my-3 p-3 rounded">
+    <Card className="my-3 p-5 border-0 rounded-5">
       <Link to={`/products/${product._id}`}>
         <CardImg src={product.image} />
       </Link>
