@@ -1,4 +1,5 @@
 import { Col, Row } from "react-bootstrap";
+import Loader from "../components/Loader";
 import Product from "../components/Product";
 import { useGetProductsQuery } from "../slices/productsApiSlice";
 
@@ -18,7 +19,7 @@ const HomePage = () => {
     <>
       <h1>Latest Products</h1>
       {isLoading ? (
-        <div>Loading</div>
+        <Loader />
       ) : error ? (
         <div>{error.toString()}</div>
       ) : (

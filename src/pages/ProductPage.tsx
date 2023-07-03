@@ -10,6 +10,7 @@ import {
   Row,
 } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
+import Loader from "../components/Loader";
 import Rating from "../components/Rating";
 import { useGetProductDetailsQuery } from "../slices/productsApiSlice";
 
@@ -48,7 +49,7 @@ const ProductPage: React.FC = () => {
       <Link className="btn btn-warning my-3" to="/">
         Go Back
       </Link>
-      {isLoading && <div>Loading</div>}
+      {isLoading && <Loader />}
       {error && error}
       {productDetails && (
         <Row>
