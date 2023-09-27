@@ -1,7 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { Provider } from "react-redux";
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -13,7 +12,6 @@ import "./index.css";
 import HomePage from "./pages/HomePage";
 import ProductPage from "./pages/ProductPage";
 import reportWebVitals from "./reportWebVitals";
-import store from "./store";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -29,9 +27,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <RouterProvider router={router} />
-    </Provider>
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
 

@@ -1,7 +1,9 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import Loader from "../components/Loader";
 import Product from "../components/Product";
-import { useGetProductsQuery } from "../slices/productsApiSlice";
+import { PRODUCT_URL } from "../constants";
 
 interface ProductType {
   _id: string;
@@ -13,18 +15,31 @@ interface ProductType {
 }
 
 const HomePage = () => {
-  const { data: products, isLoading, error } = useGetProductsQuery(undefined);
+  const [products, setProducts] = useState<ProductType[]>();
+
+  useEffect(() => {
+    const url = PRODUCT_URL;
+    const headers = {
+      accept: "text/plain",
+    };
+
+    axios
+      .get(url, { headers })
+      .then((res) => {
+        const { data } = res;
+        setProducts(data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
 
   return (
     <>
       <h1>Latest Products</h1>
-      {isLoading ? (
-        <Loader />
-      ) : error ? (
-        <div>{error.toString()}</div>
-      ) : (
-        <Row>
-          {products.map((product: ProductType) => (
+      <Row>
+        {products &&
+          products.map((product: ProductType) => (
             <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
               <Product
                 _id={product._id}
@@ -36,8 +51,7 @@ const HomePage = () => {
               />
             </Col>
           ))}
-        </Row>
-      )}
+      </Row>
     </>
   );
 };

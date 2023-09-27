@@ -10,9 +10,8 @@ import {
   Row,
 } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
-import Loader from "../components/Loader";
 import Rating from "../components/Rating";
-import { useGetProductDetailsQuery } from "../slices/productsApiSlice";
+import { PRODUCT_URL } from "../constants";
 
 interface ProductType {
   _id: string;
@@ -27,30 +26,30 @@ interface ProductType {
 
 const ProductPage: React.FC = () => {
   const { id: productId } = useParams();
-  const {
-    data: productDetails,
-    isLoading,
-    error,
-  } = useGetProductDetailsQuery(productId);
+  const [productDetails, setProductDetails] = useState<ProductType>();
 
-  // useEffect(() => {
-  //   axios
-  //     .get(`/api/products/${productId}`)
-  //     .then((response) => {
-  //       if (response && response.data) {
-  //         setProduct(response.data);
-  //       }
-  //     })
-  //     .catch((error) => console.log(error));
-  // }, [productId]);
+  useEffect(() => {
+    const url = `${PRODUCT_URL}/${productId}`;
+    const headers = {
+      accept: "text/plain",
+    };
+
+    axios
+      .get(url, { headers })
+      .then((res) => {
+        const { data } = res;
+        setProductDetails(data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
 
   return (
     <>
       <Link className="btn btn-warning my-3" to="/">
         Go Back
       </Link>
-      {isLoading && <Loader />}
-      {error && error}
       {productDetails && (
         <Row>
           <Col md={5}>
